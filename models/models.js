@@ -12,7 +12,7 @@ var host     = (url[4]||null);
 var storage  = process.env.DATABASE_STORAGE;
 
 var Sequelize = require('sequelize');
-//console.log(DB_name,user,pwd,dialect,protocol,port,host,storage, "ANTESSSSS");
+
 var sequelize = new Sequelize(DB_name, user, pwd, 
 { dialect:  protocol,
 	protocol: protocol,
@@ -22,17 +22,16 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 	omitNull: true      // solo Postgres
 }      
 );
-var sequelize = new Sequelize(null, null, null, { dialect: "sqlite", storage: "quiz.sqlite" });
 
 var quiz_path = path.join(__dirname, 'quiz');
 var Quiz = sequelize.import(quiz_path);
 
 exports.Quiz = Quiz;
 
- sequelize.sync().success(function () {
-	 Quiz.count().success(function(count){
+ sequelize.sync().then(function () {
+	 Quiz.count().then(function(count){
 		 if(count === 0){
-			 Quiz.create({ pregunta : 'Capital de Italia', respuesta : 'roma' }).success(function(){console.log('BD Inicializada.');});
+			 Quiz.create({ pregunta : 'Capital de Italia', respuesta : 'roma' }).then(function(){console.log('BD Inicializada.');});
 		 };
 	 });
 });
