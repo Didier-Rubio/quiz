@@ -2,5 +2,24 @@
 <input type="text" id="preg" name="quiz[pregunta]" value="<%= quiz.pregunta %>" /> <p> 
 <label for="resp" class="rem">Pregunta:</label>
 <input type="text" id="resp" name="quiz[respuesta]" value="<%= quiz.respuesta %>" /> <p>
+<label for="tema" class="rem">Tema:</label>
+<%
+var vector = [
+    {id: "otro", value: "Otro"},
+    {id: "humanidades", value: "Humanidades"},
+    {id: "ocio", value: "Ocio"},
+    {id: "ciencia", value: "Ciencia"},
+    {id: "tecnologia", value: "Tecnologoía"}
+];
+%>
+
+<select name="quiz[tema]">
+  <% for (var i in vector) { %>
+        <option value="<%= vector[i].id %>" <%= vector[i].id == quiz.tema ? 'selected' : '' %>>
+            <%= vector[i].value %>
+        </option>
+  <% } %>
+</select>
+<p></p>
 <a href="/quizes"><button type="button">Cancelar</button></a>
 <input type="submit" value="Guardar" />

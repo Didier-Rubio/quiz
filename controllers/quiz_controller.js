@@ -44,20 +44,20 @@ exports.answer = function(req, res){
 
 // GET /New
 exports.new = function(req, res){	
-	var quiz = models.Quiz.build({pregunta: 'Pregunta',  respuesta: 'Respuesta'});
+	var quiz = models.Quiz.build({pregunta: 'Pregunta',  respuesta: 'Respuesta', tema: 'otro'});
 	res.render('quizes/new', { quiz: quiz, errors: [] });	
 };
 
 // POST / quizes / Create
 exports.create = function(req, res){	
-	var quiz = models.Quiz.build( req.body.quiz );
+	var quiz = models.Quiz.build( req.body.quiz );	
 	quiz.validate().then(
 		function(err){
 			if(err){
 				res.render('quizes/new', {quiz: quiz, errors: err.errors });
 			}else{
 				quiz.respuesta = quiz.respuesta.toLowerCase();
-				quiz.save({fields: ["pregunta","respuesta"]}).then(function(){res.redirect('/quizes');});	
+				quiz.save({fields: ["pregunta","respuesta", "tema"]}).then(function(){res.redirect('/quizes');});	
 			}
 		}
 	);
@@ -74,13 +74,14 @@ exports.edit = function(req, res){
 exports.update = function(req, res){	
 	req.quiz.pregunta  = req.body.quiz.pregunta; 
 	req.quiz.respuesta = req.body.quiz.respuesta;
+	req.quiz.tema = req.body.quiz.tema;	
 	req.quiz.validate().then(
 		function(err){			
 			if(err){
 				res.render('quizes/edit', {quiz: req.quiz, errors: err.errors });
 			}else{
-				req.quiz.respuesta = req.quiz.respuesta.toLowerCase();				
-				req.quiz.save({fields: ["pregunta","respuesta"]}).then(function(){res.redirect('/quizes');});	
+				req.quiz.respuesta = req.quiz.respuesta.toLowerCase();		
+				req.quiz.save({fields: ["pregunta","respuesta","tema"]}).then(function(){res.redirect('/quizes');});	
 			}
 		}
 	);	
