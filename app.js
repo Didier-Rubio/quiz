@@ -37,6 +37,21 @@ app.use(function(req, res, next){
 	next();
 });
 
+// Nuevo Middleware de auto-logout 
+app.use(function(req, res, next){
+	var newtime = new Date().getMinutes();
+	res.locals.session = req.session;
+	if(res.locals.session.user){		
+		if((newtime - res.locals.session.user.tiempo) > 2){
+			delete res.locals.session.user;
+			console.log("Salio::::::::::::::::::::::", res.locals.session);
+		}else{
+			res.locals.session.user.tiempo = newtime;			
+		}		
+	}	
+	next();
+});
+
 app.use('/', routes);
 //app.use('/users', users);
 
